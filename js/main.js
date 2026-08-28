@@ -1,12 +1,15 @@
 import { config } from "./config.js";
 import { seeAlsoLinks } from "./data/see-also-links.js";
+import { notes } from "./data/notes.js";
 
 function initApp() {
   initThemeToggle();
   initNavigation();
   initFooter();
   initSeeAlsoLinks();
+  initNotes();
 }
+
 
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", initApp);
@@ -248,3 +251,144 @@ function initSeeAlsoLinks() {
     container.appendChild(linkItem);
   });
 }
+
+/* Escape HTML special characters */
+function escapeHtml(str) {
+  if (!str) return "";
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+/* Simplify URL for clean display */
+function simplifyUrl(rawUrl) {
+  try {
+    const urlObj = new URL(rawUrl);
+    return urlObj.hostname.replace(/^www\./, "");
+  } catch {
+    return rawUrl.replace(/^https?:\/\//, "").replace(/^www\./, "").split("/")[0] || rawUrl;
+  }
+}
+
+/* Create formatted inline link (YouTube or External) */
+function createFormattedLinkHtml(url, linkText) {
+  const isYoutube = url.toLowerCase().includes("youtube.com") || url.toLowerCase().includes("youtu.be");
+  let displayText = "";
+
+  if (isYoutube) {
+    displayText = linkText && linkText.trim() ? escapeHtml(linkText.trim()) : "youtube.com";
+  } else {
+    displayText = linkText && linkText.trim() ? escapeHtml(linkText.trim()) : escapeHtml(simplifyUrl(url));
+  }
+
+  const youtubeIconSvg = `
+    <svg class="note-link-icon note-link-icon--youtube" viewBox="1.5 4.5 21 15" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect width="20" height="14" x="2" y="5" rx="4" fill="currentColor" stroke="none"></rect>
+      <polygon points="10 9 15 12 10 15 10 9" fill="white" stroke="none"></polygon>
+    </svg>
+  `;
+
+  const externalLinkIconSvg = `
+    <svg class="note-link-icon note-link-icon--external" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+      <polyline points="15 3 21 3 21 9"></polyline>
+      <line x1="10" y1="14" x2="21" y2="3"></line>
+    </svg>
+  `;
+
+  const icon = isYoutube ? youtubeIconSvg : externalLinkIconSvg;
+  return `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" class="note-link">${icon}<span>${displayText}</span></a>`;
+}
+
+/* Parse inline formatting (Markdown, emoticons, links, pronunciation) */
+function renderFormattedContent(text) {
+  if (!text) return "";
+
+  let html = escapeHtml(text);
+
+  // Emoticons: :thinking: -> WhatsApp style thinking face emoji
+  const whatsappThinkingEmoji = `<span class="font-emoji" title=":thinking:">🤔</span>`;
+  html = html.replace(/:thinking:/g, whatsappThinkingEmoji);
+
+  // 1. Markdown links: [title](url)
+  html = html.replace(
+    /\[([^\]]+)\]\(([^)]+)\)/g,
+    (_match, title, url) => createFormattedLinkHtml(url, title)
+  );
+
+  // 2. Bare URLs (http:// or https://) - not preceded by href=" or ="
+  html = html.replace(
+    /(^|[\s(])(https?:\/\/[^\s<)]+)/g,
+    (_match, prefix, url) => `${prefix}${createFormattedLinkHtml(url)}`
+  );
+
+  // 3. Bold: **text**
+  html = html.replace(/\*\*([^*]+)\*\*/g, '<strong class="note-bold">$1</strong>');
+
+  // 4. Italic: *text*
+  html = html.replace(/\*([^*]+)\*/g, '<em class="note-italic">$1</em>');
+
+  // 5. Pronunciation brackets: [text] at end of line
+  html = html.replace(
+    /\s*\[([^\]]+)\]\s*$/,
+    ' <span class="note-pronunciation font-courier">[$1]</span>'
+  );
+
+  return html;
+}
+
+/* Format & Render Notes List */
+function initNotes() {
+  const container = document.getElementById("notes-container");
+  if (!container) return;
+
+  if (!Array.isArray(notes) || notes.length === 0) {
+    container.innerHTML = "<p class='text-muted'>No notes available.</p>";
+    return;
+  }
+
+  const listElement = document.createElement("ul");
+  listElement.className = "notes-list";
+
+  notes.forEach((item) => {
+    const li = document.createElement("li");
+    li.className = "note-item";
+    li.style.marginLeft = `${item.indent * 1.5}rem`;
+
+    const contentSpan = document.createElement("span");
+    contentSpan.className = "note-content";
+    contentSpan.innerHTML = renderFormattedContent(item.body);
+    li.appendChild(contentSpan);
+
+    if (item.image) {
+      const imageContainer = document.createElement("div");
+      imageContainer.className = "note-image-wrap";
+
+      if (item.image.startsWith("NOT_FOUND:")) {
+        const missingTag = item.image.replace("NOT_FOUND:", "");
+        const notFoundBadge = document.createElement("div");
+        notFoundBadge.className = "note-image-not-found";
+        notFoundBadge.textContent = `no image "${missingTag}" found`;
+        imageContainer.appendChild(notFoundBadge);
+      } else {
+        const img = document.createElement("img");
+        img.src = `images/outline/${item.image}`;
+        img.alt = item.image;
+        img.className = "note-image";
+        img.loading = "lazy";
+        imageContainer.appendChild(img);
+      }
+
+      li.appendChild(imageContainer);
+    }
+
+    listElement.appendChild(li);
+  });
+
+  container.innerHTML = "";
+  container.appendChild(listElement);
+}
+

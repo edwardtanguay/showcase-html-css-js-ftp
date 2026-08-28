@@ -38,9 +38,13 @@
           <a href="#welcome" class="site-nav__link active" data-nav-target="welcome">Welcome</a>
         </li>
         <li class="site-nav__item">
+          <a href="#notes" class="site-nav__link" data-nav-target="notes">Notes</a>
+        </li>
+        <li class="site-nav__item">
           <a href="#about" class="site-nav__link" data-nav-target="about">About</a>
         </li>
       </ul>
+
     </div>
   </nav>
 
@@ -75,7 +79,18 @@
       </article>
     </section>
 
+    <!-- Notes View -->
+    <section id="view-notes" class="page-view" aria-labelledby="notes-heading">
+      <article class="card">
+        <h2 id="notes-heading">Notes</h2>
+        <div id="notes-container" class="notes-container" aria-live="polite">
+          <!-- Populated dynamically by js/main.js from js/data/notes.js -->
+        </div>
+      </article>
+    </section>
+
     <!-- About View -->
+
     <section id="view-about" class="page-view" aria-labelledby="about-heading">
       <article class="card">
         <h2 id="about-heading">About</h2>
