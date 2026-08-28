@@ -1,16 +1,10 @@
 - this is a test
-	- https://www.marathondesgrandscrus.com
-	- [Marathon des grands crus 17/10/2021 à Dijon](https://www.youtube.com/watch?v=qQCA4KLtdog)
-	- course à pied
-		- https://www.openrunner.com/route-details/23448723
-- quoi emporter
-	- maillot de marathon
-	- tous mes livres
-	- tous les vêtements de course
-	- les gels
-	- tous les mots de passe
-	- cettes notes et l'application en ligne
-	- Assurer que les cours VHS fonctionnent sur mobile
-- les dix quartiers les plus populaires de Dijon
-	- **Centre-ville** - les Halles, le palais des Ducs, la rue de la Liberté##centreville
-	- more notes
+	- here are some links:
+		- https://www.marathondesgrandscrus.com
+		- [Marathon des grands crus 17/10/2021 à Dijon](https://www.youtube.com/watch?v=qQCA4KLtdog)
+		- course à pied
+			- https://www.openrunner.com/route-details/23448723
+- Bad Schandau
+	- perhaps they have Airbnbs there? :thinking:
+	- basic info: https://de.wikipedia.org/wiki/Bad_Schandau
+	- looks like a nice little town##badsch

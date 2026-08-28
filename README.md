@@ -38,3 +38,40 @@ FTP_DIRECTORY = /public_html/infosite001
 1. Copy `.env.example` to `.env`:
 2. Fill in your actual FTP credentials in `.env` (note: `.env` is ignored by `.gitignore` and should never be committed to source control).
 
+---
+
+## Outline Syntax & Markdown Guide
+
+Outline data files (`data/*.outline.dpod.txt`) are parsed using `npm run pd` into structured JavaScript data (`js/data/*.js`) and rendered with custom formatting.
+
+### Hierarchy & Indentation
+- **Indentation Level**: Use leading **tabs** (`\t`) to define indentation depth and nesting hierarchy for outline items.
+- **Bullet Marker**: Lines can start with `- ` or `-` after tabs (stripped automatically during parsing).
+
+### Inline Markdown & Text Formatting
+- **Bold Text**: Wrap with double asterisks `**bold text**` (renders with `<strong class="note-bold">`).
+- **Italic Text**: Wrap with single asterisks `*italic text*` (renders with `<em class="note-italic">`).
+- **Markdown Links**: `[Link Label](https://example.com)` (rendered with an external link icon and label).
+- **Bare URLs**: Plain URLs such as `https://example.com` or `http://...` are automatically detected and converted into clean clickable links showing the domain or YouTube badge.
+- **YouTube Links**: URLs pointing to YouTube (or youtu.be) automatically display a YouTube icon badge.
+- **Pronunciation Guides**: Place pronunciation text in brackets at the very end of a line, e.g. `[franswa]` &rarr; renders in a monospace font `<span class="note-pronunciation font-courier">`.
+- **Emoticons**: `:thinking:` is converted into the WhatsApp-style thinking face emoji 🤔 (`<span class="font-emoji">`).
+
+### Image Tags
+- Append `##<imagename>` at the end of any outline line (e.g. `looks like a nice little town##badsch`).
+- The parser matches `<imagename>` against files in `images/outline/` (matching `.jpg`, `.jpeg`, `.png`, `.gif`, or `.webp`).
+- If an image is found, it renders under the item with lazy loading; if not found, a `no image "<imagename>" found` badge is shown.
+
+### Example Outline File
+```text
+- this is a main item with **bold** and *italic* text
+	- here are some links:
+		- https://www.marathondesgrandscrus.com
+		- [Marathon des grands crus 17/10/2021 à Dijon](https://www.youtube.com/watch?v=qQCA4KLtdog)
+		- course à pied [koors ah pyay]
+			- https://www.openrunner.com/route-details/23448723
+- Bad Schandau
+	- basic info: https://de.wikipedia.org/wiki/Bad_Schandau
+	- looks like a nice little town##badsch
+```
+

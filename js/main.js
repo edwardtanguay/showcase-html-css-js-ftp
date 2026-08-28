@@ -309,8 +309,8 @@ function renderFormattedContent(text) {
 
   let html = escapeHtml(text);
 
-  // Emoticons: :thinking: -> WhatsApp style thinking face emoji
-  const whatsappThinkingEmoji = `<span class="font-emoji" title=":thinking:">🤔</span>`;
+  // Emoticons: :thinking: -> WhatsApp / Apple style thinking face emoji image
+  const whatsappThinkingEmoji = `<img src="images/icons/emoji-thinking.png" alt="🤔" title=":thinking:" class="font-emoji font-emoji--img" width="20" height="20" />`;
   html = html.replace(/:thinking:/g, whatsappThinkingEmoji);
 
   // 1. Markdown links: [title](url)
