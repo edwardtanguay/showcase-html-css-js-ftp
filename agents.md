@@ -82,7 +82,7 @@ Every site derived from this template should adhere to these baseline features:
 
 ## Data Parsing & Content Architecture
 
-A core design pattern of this template is enabling developers to store content in flat, readable text files within `/data/` and compile them into static JavaScript modules in `/js/data/` for dynamic client-side rendering.
+A core design pattern of this template is enabling developers to store content in flat, readable text files within `/data/` and compile them into static JavaScript modules in `/js/data-parsed/` for dynamic client-side rendering.
 
 ### Workflow & Conventions:
 
@@ -92,14 +92,14 @@ A core design pattern of this template is enabling developers to store content i
 
 2. **Parser Modules (`/cmd/parse-data/*.ts`)**:
    - Create a dedicated parsing function in `/cmd/parse-data/parse-[feature].ts` (e.g. `parseSeeAlsoLinks()`).
-   - The parser reads the text file, converts entries into structured JavaScript objects or arrays, and writes an ES module output to `/js/data/[feature].js` (e.g. `export const seeAlsoLinks = [...];`).
+   - The parser reads the text file, converts entries into structured JavaScript objects or arrays, and writes an ES module output to `/js/data-parsed/[feature].js` (e.g. `export const seeAlsoLinks = [...];`).
 
 3. **Orchestration (`npm run pd`)**:
    - `/cmd/parse-data.ts` acts as the master runner that imports and executes each individual parse function.
-   - Run `npm run pd` to re-generate all `/js/data/` modules at any time.
+   - Run `npm run pd` to re-generate all `/js/data-parsed/` modules at any time.
 
 4. **Frontend Consumption (`/js/main.js`)**:
-   - Frontend scripts import the data modules directly (`import { seeAlsoLinks } from "./data/see-also-links.js";`).
+   - Frontend scripts import the data modules directly (`import { seeAlsoLinks } from "./data-parsed/see-also-links.js";`).
    - Elements are rendered cleanly and securely at runtime via standard DOM APIs.
 
 ## Automated Deployment & Updates ("npm run deploy" / "ftp" trigger)
@@ -107,7 +107,7 @@ A core design pattern of this template is enabling developers to store content i
 When the developer runs **`npm run deploy`** or types **`ftp`** in the chatbot, the pipeline automatically executes:
 
 1. **Pre-deployment Tasks (`npm run pd`)**:
-   - Runs `/cmd/parse-data.ts` to ensure all static JavaScript data files in `/js/data/` are up to date.
+   - Runs `/cmd/parse-data.ts` to ensure all static JavaScript data files in `/js/data-parsed/` are up to date.
 2. **Cache Busting**:
    - `/cmd/deploy.ts` increments/updates cache-busting timestamp parameters (`?v=YYYYMMDDHHMMSS`) on all stylesheet and script references in `index.html`.
 3. **FTP Upload**:

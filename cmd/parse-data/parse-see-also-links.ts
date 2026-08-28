@@ -8,7 +8,7 @@ export interface LinkItem {
 
 export function parseSeeAlsoLinks(): void {
   const inputFilePath = path.resolve("data", "see-also-links.dpod.txt");
-  const outputDir = path.resolve("js", "data");
+  const outputDir = path.resolve("js", "data-parsed");
   const outputFilePath = path.join(outputDir, "see-also-links.js");
 
   if (!fs.existsSync(inputFilePath)) {

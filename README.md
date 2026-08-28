@@ -42,7 +42,7 @@ FTP_DIRECTORY = /public_html/infosite001
 
 ## Outline Syntax & Markdown Guide
 
-Outline data files (`data/*.outline.dpod.txt`) are parsed using `npm run pd` into structured JavaScript data (`js/data/*.js`) and rendered with custom formatting.
+Outline data files (`data/*.outline.dpod.txt`) are parsed using `npm run pd` into structured JavaScript data (`js/data-parsed/*.js`) and rendered with custom formatting.
 
 ### Hierarchy & Indentation
 - **Indentation Level**: Use leading **tabs** (`\t`) to define indentation depth and nesting hierarchy for outline items.

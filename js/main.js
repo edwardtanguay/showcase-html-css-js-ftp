@@ -1,6 +1,6 @@
 import { config } from "./config.js";
-import { seeAlsoLinks } from "./data/see-also-links.js";
-import { notes } from "./data/notes.js";
+import { seeAlsoLinks } from "./data-parsed/see-also-links.js";
+import { notes } from "./data-parsed/notes.js";
 
 function initApp() {
   initThemeToggle();
