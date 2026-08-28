@@ -55,7 +55,29 @@ Outline data files (`data/*.outline.dpod.txt`) are parsed using `npm run pd` int
 - **Bare URLs**: Plain URLs such as `https://example.com` or `http://...` are automatically detected and converted into clean clickable links showing the domain or YouTube badge.
 - **YouTube Links**: URLs pointing to YouTube (or youtu.be) automatically display a YouTube icon badge.
 - **Pronunciation Guides**: Place pronunciation text in brackets at the very end of a line, e.g. `[franswa]` &rarr; renders in a monospace font `<span class="note-pronunciation font-courier">`.
-- **Emoticons**: `:thinking:` is converted into the WhatsApp-style thinking face emoji 🤔 (`<span class="font-emoji">`).
+
+### Supported Emoticons / WhatsApp Icons
+Shortcodes in outline text are automatically converted into WhatsApp-style emoji icons:
+
+| Code | Emoji / Preview | Description |
+| :--- | :--- | :--- |
+| `:stareyes:` | 🤩 | Smile with blue stars as eyes |
+| `:smile:` | 😊 | Normal smile |
+| `:ohmygod:` | 😮 | Eyes wide open |
+| `:whatever:` | 🤪 | One eye up, one down, tongue out |
+| `:shootingstar:` | 💫 | Shooting star / dizzy sparkle |
+| `:muscle:` | 💪 | Flexed bicep |
+| `:thumbsup:` | 👍 | Thumbs up |
+| `:twohearts:` | 💕 | Two pink hearts |
+| `:redheart:` | ❤️ | Big red heart |
+| `:water:` | 💦 | Three water drops / sweat |
+| `:twinkle:` | ✨ | Sparkles |
+| `:laugh:` | 😅 | Smile with water/sweat drop |
+| `:check:` | ✅ | Green check mark |
+| `:ohno:` | 😬 | Clenched teeth / grimace |
+| `:party:` | 🎉 | Party popper cone with confetti |
+| `:thinking:` | 🤔 | Thinking face |
+
 
 ### Image Tags
 - Append `##<imagename>` at the end of any outline line (e.g. `looks like a nice little town##badsch`).

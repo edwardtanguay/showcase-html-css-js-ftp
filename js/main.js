@@ -309,9 +309,31 @@ function renderFormattedContent(text) {
 
   let html = escapeHtml(text);
 
-  // Emoticons: :thinking: -> WhatsApp / Apple style thinking face emoji image
-  const whatsappThinkingEmoji = `<img src="images/icons/emoji-thinking.png" alt="🤔" title=":thinking:" class="font-emoji font-emoji--img" width="20" height="20" />`;
-  html = html.replace(/:thinking:/g, whatsappThinkingEmoji);
+  // Emoticons: replace shortcodes with WhatsApp style emoji images
+  const emojiMap = {
+    ":thinking:": { file: "emoji-thinking.png", alt: "🤔" },
+    ":stareyes:": { file: "emoji-stareyes.png", alt: "🤩" },
+    ":smile:": { file: "emoji-smile.png", alt: "😊" },
+    ":ohmygod:": { file: "emoji-ohmygod.png", alt: "😮" },
+    ":whatever:": { file: "emoji-whatever.png", alt: "🤪" },
+    ":shootingstar:": { file: "emoji-shootingstar.png", alt: "💫" },
+    ":muscle:": { file: "emoji-muscle.png", alt: "💪" },
+    ":thumbsup:": { file: "emoji-thumbsup.png", alt: "👍" },
+    ":twohearts:": { file: "emoji-twohearts.png", alt: "💕" },
+    ":redheart:": { file: "emoji-redheart.png", alt: "❤️" },
+    ":water:": { file: "emoji-water.png", alt: "💦" },
+    ":twinkle:": { file: "emoji-twinkle.png", alt: "✨" },
+    ":laugh:": { file: "emoji-laugh.png", alt: "😅" },
+    ":check:": { file: "emoji-check.png", alt: "✅" },
+    ":ohno:": { file: "emoji-ohno.png", alt: "😬" },
+    ":party:": { file: "emoji-party.png", alt: "🎉" }
+  };
+
+  Object.entries(emojiMap).forEach(([code, emoji]) => {
+    const regex = new RegExp(code, "g");
+    const imgHtml = `<img src="images/icons/${emoji.file}" alt="${emoji.alt}" title="${code}" class="font-emoji font-emoji--img" width="20" height="20" />`;
+    html = html.replace(regex, imgHtml);
+  });
 
   // 1. Markdown links: [title](url)
   html = html.replace(
