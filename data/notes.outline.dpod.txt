@@ -9,7 +9,7 @@
 	- basic info: https://de.wikipedia.org/wiki/Bad_Schandau
 	- looks like a nice little town##badsch
 - Icon Examples
-	- stareyes :stareyes:
+	- stareyes :stareyes: and text after it
 	- smile :smile:
 	- ohmygod :ohmygod:
 	- whatever :whatever:
