@@ -179,6 +179,7 @@ body {
   background-color: var(--surface-color);
 }
 
+.site-nav__link:active,
 .site-nav__link.active {
   color: var(--nav-active-text);
   background-color: var(--nav-active-bg);
