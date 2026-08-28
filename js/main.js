@@ -110,7 +110,7 @@ function initNavigation() {
     });
   }
 
-  // Smooth, fast view switching
+  // Fast view switching
   function switchView(targetId) {
     const targetSection = document.getElementById(`view-${targetId}`);
     if (!targetSection) return;
@@ -130,30 +130,22 @@ function initNavigation() {
       if (hamburgerBtn) hamburgerBtn.setAttribute("aria-expanded", "false");
     }
 
-    // Fast transition between views
+    // View visibility
     pageViews.forEach((view) => {
       if (view === targetSection) {
         view.classList.add("active");
-        // Force reflow for smooth animation trigger
-        requestAnimationFrame(() => {
-          view.classList.add("visible");
-        });
+        view.classList.add("visible");
       } else {
         view.classList.remove("visible");
         view.classList.remove("active");
       }
     });
-
-    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  // Initialize initial visible state
-  const activeView = document.querySelector(".page-view.active");
-  if (activeView) {
-    requestAnimationFrame(() => {
-      activeView.classList.add("visible");
-    });
-  }
+  // Handle initial view based on hash or default to welcome
+  const rawHash = window.location.hash.replace("#", "");
+  const initialTarget = rawHash && document.getElementById(`view-${rawHash}`) ? rawHash : "welcome";
+  switchView(initialTarget);
 
   // Attach click listeners to nav links
   navLinks.forEach((link) => {
@@ -162,16 +154,11 @@ function initNavigation() {
       const targetId = link.getAttribute("data-nav-target");
       if (targetId) {
         switchView(targetId);
+        window.scrollTo({ top: 0, behavior: "smooth" });
         history.replaceState(null, "", `#${targetId}`);
       }
     });
   });
-
-  // Handle hash on initial load or popstate
-  const initialHash = window.location.hash.replace("#", "");
-  if (initialHash && document.getElementById(`view-${initialHash}`)) {
-    switchView(initialHash);
-  }
 }
 
 /**
